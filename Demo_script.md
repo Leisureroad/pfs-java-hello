@@ -61,7 +61,7 @@ pfs function create uppercase \
   --verbose
 ```
 
-# invoke function - uppercase
+# Invoke function - uppercase
 ```pfs service invoke uppercase --text -- -w '\n' -d 'welcome to pfs'```
 
 # Create a js funciton
@@ -87,7 +87,7 @@ pfs function create hello \
 # Invoke hello
 ```pfs service invoke hello --text -- -w '\n' -d 'PFS'```
 
-# Build square function
+# Create square function
 ```
 pfs function create square \
   --git-repo https://github.com/projectriff-samples/node-square \
@@ -97,7 +97,7 @@ pfs function create square \
 
 pfs service invoke square --text -- -d 8
 ```
-# Build random funciton
+# Create random funciton
 ```
 pfs service create random --image jldec/random:v0.0.2
 
