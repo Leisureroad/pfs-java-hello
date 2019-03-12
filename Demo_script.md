@@ -2,12 +2,12 @@
 ```docker run -d -p 5000:5000 --restart=always --volume ~/.registry/storage:/var/lib/registry registry:2```
 
 # 设置环境变量
+```
+export REGISTRY=registry.pfs.svc.cluster.local:5000
+export REGISTRY_USER=testuser
+```
 
-```export REGISTRY=registry.pfs.svc.cluster.local:5000```
-```export REGISTRY_USER=testuser```
-
-
-# relocate image
+# Relocate image
 ```
 pfs image relocate \
   --output pfs-relocated \
@@ -17,7 +17,7 @@ pfs image relocate \
   --registry-user $REGISTRY_USER
   ```
 
-# push image
+# Push image
 ```pfs image push --images pfs-relocated/image-manifest.yaml```
 
 # 创建namespace
@@ -26,7 +26,7 @@ kubectl create namespace pfs
 kubectl create service externalname registry -n pfs --external-name=host.docker.internal --tcp=5000:5000
 ```
 
-# 安装pfs
+# 安装PFS
 ```pfs system install -m pfs-relocated/manifest.yaml --node-port```
 
 # 初始化namespace
@@ -41,7 +41,7 @@ export PFS_PACKS_RUN_IMAGE=`grep -o "$REGISTRY/$REGISTRY_USER/packs-run.*" \
 ```
 
 # 对比一下没有pfs这样的平台，是如何进行容器式应用的？
-```https://github.com/jldec/hello-node/tree/07e99390647a9f33352fbb2e781cc16ae184397a```
+https://github.com/jldec/hello-node/tree/07e99390647a9f33352fbb2e781cc16ae184397a
 
 # 创建函数
 ## nodejs-本地构建
@@ -103,17 +103,17 @@ pfs service create random --image jldec/random:v0.0.2
 
 pfs service invoke random --json -- -w '\n' -d '{"url":"http://hello.default.svc.cluster.local"}'
 ```
-# create channel
+# Create channel
 ```pfs channel create numbers --cluster-bus stub```
 ```pfs channel create squares --cluster-bus stub```
 
-# create subscription
+# Create subscription
 ```pfs subscription create --channel numbers --subscriber square --reply-to squares```
 ```pfs subscription create --channel squares --subscriber hello```
 
 ```pfs service invoke random --json -- -w '\n' -d '{"url":"http://numbers-channel.default.svc.cluster.local"}'```
 
-# kill activator
+# Kill activator
 ```kubectl delete pod -l app=activator -n knative-serving```
 
 
